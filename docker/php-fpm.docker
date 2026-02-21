@@ -1,0 +1,15 @@
+FROM php:7.1-fpm
+
+# FIX: Переключаемся на архивные репозитории
+RUN sed -i 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list \
+    && sed -i 's/security.debian.org/archive.debian.org/g' /etc/apt/sources.list \
+    && sed -i '/stretch-updates/d' /etc/apt/sources.list \
+    && sed -i '/buster-updates/d' /etc/apt/sources.list
+
+# Устанавливаем расширения
+# ЗАМЕНА: mysql-client -> default-mysql-client
+RUN apt-get update -o Acquire::Check-Valid-Until=false \
+    && apt-get install -y libmcrypt-dev default-mysql-client \
+    && docker-php-ext-install mcrypt pdo_mysql pcntl
+
+WORKDIR /var/www

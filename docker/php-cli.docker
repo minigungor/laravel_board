@@ -1,0 +1,24 @@
+FROM php:7.1-cli
+
+# FIX: Переключаемся на архивные репозитории
+RUN sed -i 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list \
+    && sed -i 's/security.debian.org/archive.debian.org/g' /etc/apt/sources.list \
+    && sed -i '/stretch-updates/d' /etc/apt/sources.list \
+    && sed -i '/buster-updates/d' /etc/apt/sources.list
+
+# Устанавливаем зависимости и Composer
+# ДОБАВЛЕНО: zlib1g-dev (нужен для расширения zip)
+RUN apt-get update -o Acquire::Check-Valid-Until=false \
+    && apt-get install -y \
+    libmcrypt-dev \
+    default-mysql-client \
+    git \
+    zip \
+    unzip \
+    zlib1g-dev \
+    && docker-php-ext-install mcrypt pdo_mysql pcntl zip
+
+# Копируем Composer
+COPY --from=composer:2.2 /usr/bin/composer /usr/bin/composer
+
+WORKDIR /var/www
