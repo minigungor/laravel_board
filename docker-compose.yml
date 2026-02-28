@@ -49,9 +49,9 @@ services:
             - ./storage/docker/mysql:/var/lib/mysql
         environment:
             - "MYSQL_ROOT_PASSWORD=secret"
-            - "MYSQL_USER=app"
+            - "MYSQL_USER=root"
             - "MYSQL_PASSWORD=secret"
-            - "MYSQL_DATABASE=app"
+            - "MYSQL_DATABASE=laravel"
         ports:
             - "33061:3306"
     redis:
