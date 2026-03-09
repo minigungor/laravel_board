@@ -1,0 +1,109 @@
+C#
+
+PHP
+MySQL
+Apache
+
+Nginx -> php-fpm
+
+site.com/.env
+
+--------
+
+Nginx
+PHP-FPM
+MySQL
+REDIS
+MEMcache
+NODEJS + Yarn
+Go
+RabbitMQ
+Cron
+Supervisor
+
+----
+
+- вручную + шпаргалку
+- полуручной + install.sh
+- VirtualBox + шпаргалка   Guest Additions /var/www/laravel
+- VirtualBox + install.sh
+- virtual.sh -> VirtualBox          virtual.sh up
+- virtual.sh -> VirtualBox          virtual.sh up  machine1.yml
+
+Vagrant
+
+===============
+
+----------- 600mb
+| Ubuntu  |
+|         |
+|         |
+|         |
+| PHP     |
+| MySQL   |
+| Nginx   |
+|  ...    |
+-----------
+
+=====================
+
+          /---- Static
+         /---- Static
+        /---- Static
+Nginx   ----- Static
+Load
+Balancer    ----- BackEnd - PHP-fpm     ---- MySQL M
+            \- PHP-fpm                 -/     MySQL S
+             \- PHP-fpm                  -\   MySQL S
+              \- PHP-fpm                ---\
+                \- PHP-fpm             --- Redis
+                  \- PHP-fpm                ---\ Lodash
+                    \- PHP-fpm                ---/
+                                                    Memcache
+
+
+                        /// PHP-CLI ///
+
+                        RabbitMq \
+    PowerDNS M                     NodeJS
+    PowerDNS S
+    PowerDNS S
+    PowerDNS S
+    |
+    MySQL
+    |
+    PowerDNS admin
+
+=============================
+
+
+sandbox php
+sandbox serves.sh -ip 127.1.15.112
+sandbox serves.sh -ip 127.1.15.113
+sandbox serves.sh -ip 127.1.15.114
+
+            400mb
+-----------
+| Ubuntu  |        Image1
+-----------
+    |   30mb
+---------------------
+| PHP-fpm           |   php
+---------------------
+        |   30mb
+---------------------
+| MySQl             | MySQL
+---------------------
+
+    3mb             5mb
+------------    -----------
+|   Files  |   | Files    |  Container
+-------------   ----------
+
+
+
+
+
+
+
+
