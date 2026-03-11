@@ -1,10 +1,20 @@
 // Body
-$body-bg: #f8fafc;
+$body-bg: #f5f8fa;
 
 // Typography
-$font-family-sans-serif: 'Nunito', sans-serif;
+$font-family-sans-serif: 'Arial', sans-serif;
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
+
+// Navbar
+$navbar-dark-color: rgba(#fff, .8);
+$navbar-dark-hover-color: rgba(#fff, .95);
+
+$primary:       $blue !default;
+$success:       $green !default;
+$info:          $cyan !default;
+$warning:       $yellow !default;
+$danger:        $red !default;
 
 // Colors
 $blue: #3490dc;
