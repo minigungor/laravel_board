@@ -43,6 +43,9 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('admin.home') }}">
+                                    Admin
+                                </a>
                                 <a class="dropdown-item" href="{{ route('cabinet') }}">
                                     Cabinet
                                 </a>
@@ -64,9 +67,23 @@
         </div>
     </nav>
 
-    <main class="py-4">
-        @yield('content')
+    <main class="app-content py-3">
+        <div class="container">
+            @section('breadcrumbs', Breadcrumbs::render())
+            @yield('breadcrumbs')
+            @include('layouts.partials.flash')
+            @yield('content')
+        </div>
     </main>
+
+    <footer>
+        <div class="container">
+            <div class="border-top pt-3">
+                <p>&copy; {{date('Y')}} - Adverts</p>
+            </div>
+        </div>
+    </footer>
+
 </div>
 
 <script src="{{ mix('js/app.js', 'build') }}"></script>

@@ -113,6 +113,9 @@
       <path value="$PROJECT_DIR$/vendor/barryvdh/laravel-debugbar" />
       <path value="$PROJECT_DIR$/vendor/maximebf/debugbar" />
       <path value="$PROJECT_DIR$/vendor/_laravel_idea" />
+      <path value="$PROJECT_DIR$/vendor/davejamesmiller/laravel-breadcrumbs" />
+      <path value="$PROJECT_DIR$/vendor/diglactic/laravel-breadcrumbs" />
+      <path value="$PROJECT_DIR$/vendor/facade/ignition-contracts" />
     </include_path>
   </component>
   <component name="PhpInterpreters">
