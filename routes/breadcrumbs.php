@@ -46,9 +46,9 @@ Breadcrumbs::register('admin.users.create', function (Crumbs $crumbs) {
     $crumbs->push('Create', route('admin.users.create'));
 });
 
-Breadcrumbs::register('admin.users.show', function (Crumbs $crumbs) {
+Breadcrumbs::register('admin.users.show', function (Crumbs $crumbs, \App\Entity\User $user) {
     $crumbs->parent('admin.users.index');
-    $crumbs->push('Show', route('admin.users.show'));
+    $crumbs->push('Show', route('admin.users.show', compact('user')));
 });
 
 Breadcrumbs::register('admin.users.edit', function (Crumbs $crumbs) {

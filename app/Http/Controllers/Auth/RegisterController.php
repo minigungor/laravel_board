@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Commands\CommandBus;
+use App\Commands\User\Auth\Register\Handler;
 use App\Entity\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
-use App\Mail\Auth\VerifyMail;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
-    public function __construct()
+    public $bus;
+    public function __construct(CommandBus $bus)
     {
         $this->middleware('guest');
+        $this->bus = $bus;
     }
 
     public function showRegistrationForm()
@@ -24,16 +24,7 @@ class RegisterController extends Controller
 
     public function register(RegisterRequest $request)
     {
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'verify_token' => Str::random(),
-            'status' => User::STATUS_WAIT,
-        ]);
-
-        Mail::to($user->email)->send(new VerifyMail($user));
-        event(new Registered($user));
+        $this->bus->handle(new Handler::fromRequest($request));
 
         return redirect()->route('login')
             ->with('success', 'Check your email and click on the link to verify.');
@@ -46,16 +37,15 @@ class RegisterController extends Controller
                 ->with('error', 'Sorry your link cannot be identified.');
         }
 
-        if($user->status !== User::STATUS_WAIT) {
+        try {
+            $this->bus->handle(new VerifyCommand($user->id));
             return redirect()->route('login')
-                ->with('error', 'Your email is already verified.');
+                ->with('success', 'Your email is verified.Your account has been activated.');
+
+        } catch (\DomainException $e) {
+            return redirect()->route('login')->with('error', $e->getMessage());
         }
 
-        $user->status = User::STATUS_ACTIVE;
-        $user->verify_token = null;
-        $user->save();
 
-        return redirect()->route('login')
-            ->with('success', 'Your account has been activated.');
     }
 }

@@ -3,12 +3,22 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Entity\User;
+use App\Http\Requests\Admin\Users\CreateRequest;
+use App\Http\Requests\Admin\Users\UpdateRequest;
+use App\UserCases\Auth\RegisterService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Hash;
+
 
 class UsersController extends Controller
 {
+    public $register;
+
+    public function __construct(RegisterService $register)
+    {
+        $this->register = $register;
+    }
 
     public function index()
     {
@@ -22,18 +32,12 @@ class UsersController extends Controller
         return view('admin.users.create');
     }
 
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
-        $this->validate($request, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-        ]);
-
-        $user = User::create([
-            'name' => $request['name'],
-            'email' => $request['email'],
-            'status' => \App\Entity\User::STATUS_ACTIVE,
-        ]);
+        $user = User::new(
+            $request['name'],
+            $request['email']
+        );
 
         // $user = User::create($request->only(['name', 'email']));
 
@@ -48,24 +52,14 @@ class UsersController extends Controller
 
     public function edit(User $user)
     {
-        $statuses = [
-            \App\Entity\User::STATUS_WAIT => 'Waiting',
-            \App\Entity\User::STATUS_ACTIVE => 'Active',
-        ];
-
-        return view('admin.users.edit', compact('user', 'statuses'));
+        return view('admin.users.edit', compact('user'));
     }
 
 
-    public function update(Request $request, User $user)
+    public function update(UpdateRequest $request, User $user)
     {
-        $data = $this->validate($request, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,'. $user->id,
-            'status' => ['required', 'string', Rule::in([\App\Entity\User::STATUS_WAIT, \App\Entity\User::STATUS_ACTIVE])],
-        ]);
 
-        $user->update($data);
+        $user->update($request->only(['name', 'email', 'status']));
 
         return redirect()->route('admin.users.show', $user);
     }
@@ -76,5 +70,12 @@ class UsersController extends Controller
         $user->delete();
 
         return redirect()->route('admin.users.index');
+    }
+
+    public function verify(User $user)
+    {
+        $this->register->verify($user->id);
+
+        return redirect()->route('admin.users.show', $user);
     }
 }

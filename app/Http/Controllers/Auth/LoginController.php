@@ -49,7 +49,7 @@ class LoginController extends Controller
 
         $this->incrementLoginAttempts($request);
 
-        throw ValidationException::withMessage(['email' => [trans('auth.failed')]]);
+        throw ValidationException::withMessages(['email' => [trans('auth.failed')]]);
 
     }
 

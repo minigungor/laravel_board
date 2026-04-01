@@ -20,6 +20,61 @@
 
 -------------------
 
+Http
+    Controllers
+Domain
+    Entity
+    Repositories
+    Service
+        GeoInterface
+Application
+    userCases
+Infrastructure
+    GoogleGeo implement GeoInterface
+
+-------------------
+
+Http
+
+
+Entity
+    User
+    Advert
+    AdvertCategory
+    Product
+    ProductCategory
+
+Repository
+    User
+    Advert
+    Product
+
+UseCases
+    User
+    Advert
+    Product
+
+User
+    Entity
+        User
+    Repository
+        UserRepository
+    UseCases
+        register
+
+----
+
+Shop
+    Entity
+        Product
+        ProductCategory
+    Repository
+        ProductRepository
+    UseCases
+        register
+
+
+----------------
 framework
     код
        Библиотека

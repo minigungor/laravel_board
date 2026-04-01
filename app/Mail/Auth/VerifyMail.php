@@ -23,6 +23,6 @@ class VerifyMail extends Mailable
     {
         return $this
             ->subject('Verify your email')
-            ->markdown('views.emails.auth.verify');
+            ->markdown('emails.auth.register.verify');
     }
 }
